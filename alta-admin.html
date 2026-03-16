@@ -49,5 +49,100 @@
     </div>
     
     </div>
+
+    <script>
+        // Aquí guardamos los admins (array en memoria, sin base de datos)
+        var admins = [];
+        
+        function guardarAdmin() {
+            // Leer valores del formulario
+            var nombre    = document.getElementById("nombre").value.trim();
+            var correo    = document.getElementById("correo").value.trim();
+            var contrasena = document.getElementById("contrasena").value.trim();
+            var rol       = document.getElementById("rol").value;
+            var mensaje   = document.getElementById("mensaje");
+        
+            // Validación: todos los campos son obligatorios
+            if (nombre === "" || correo === "" || contrasena === "" || rol === "") {
+            mostrarMensaje("⚠️ Por favor llena todos los campos.", "error");
+            return;
+            }
+        
+            // Validación: contraseña mínimo 6 caracteres
+            if (contrasena.length < 6) {
+            mostrarMensaje("⚠️ La contraseña debe tener al menos 6 caracteres.", "error");
+            return;
+            }
+        
+            // Validación: correo no repetido
+            for (var i = 0; i < admins.length; i++) {
+            if (admins[i].correo === correo) {
+                mostrarMensaje("⚠️ Ese correo ya está registrado.", "error");
+                return;
+            }
+            }
+        
+            // Crear objeto administrador
+            var nuevoAdmin = {
+            id:        admins.length + 1,
+            nombre:    nombre,
+            correo:    correo,
+            rol:       rol,
+            estado:    "Activo"
+            };
+        
+            // Agregar al array
+            admins.push(nuevoAdmin);
+        
+            // Limpiar formulario
+            document.getElementById("nombre").value     = "";
+            document.getElementById("correo").value     = "";
+            document.getElementById("contrasena").value = "";
+            document.getElementById("rol").value        = "";
+        
+            mostrarMensaje("✅ Administrador registrado con éxito.", "ok");
+            actualizarLista();
+        }
+        
+        function eliminarAdmin(id) {
+            // Filtrar el admin con ese id
+            admins = admins.filter(function(a) { return a.id !== id; });
+            actualizarLista();
+        }
+        
+        function actualizarLista() {
+            var contenedor = document.getElementById("lista-admins");
+            var contador   = document.getElementById("contador");
+        
+            contador.textContent = "Total: " + admins.length + " administrador(es)";
+        
+            if (admins.length === 0) {
+            contenedor.innerHTML = '<p class="vacio">Aún no hay administradores registrados.</p>';
+            return;
+            }
+        
+            var html = "";
+            for (var i = 0; i < admins.length; i++) {
+            var a = admins[i];
+            html += '<div class="admin-item">';
+            html += '  <div class="nombre">' + a.nombre + '</div>';
+            html += '  <div class="detalle">📧 ' + a.correo + '</div>';
+            html += '  <div class="detalle">🏷️ ' + a.rol + '</div>';
+            html += '  <span class="badge activo">' + a.estado + '</span>';
+            html += '  <button class="btn-eliminar" onclick="eliminarAdmin(' + a.id + ')">Eliminar</button>';
+            html += '</div>';
+            }
+        
+            contenedor.innerHTML = html;
+        }
+        
+        function mostrarMensaje(texto, tipo) {
+            var el = document.getElementById("mensaje");
+            el.textContent  = texto;
+            el.className    = "mensaje " + tipo;
+            el.style.display = "block";
+            setTimeout(function() { el.style.display = "none"; }, 3000);
+        }
+    </script>
 </body>
 </html>
