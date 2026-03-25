@@ -141,7 +141,93 @@ button {
 </div>
 
 <script>
+var avisos = [];
 
+function agregarAviso() {
+    var titulo = document.getElementById("txtTitulo").value;
+    var contenido = document.getElementById("txtContenido").value;
+
+    if (titulo === "" || contenido === "") {
+        alert("Completa los campos");
+        return;
+    }
+
+    var fecha = new Date().toLocaleString();
+
+    var aviso = {
+        id: avisos.length + 1,
+        titulo: titulo,
+        contenido: contenido,
+        fecha: fecha
+    };
+
+    avisos.push(aviso);
+
+    document.getElementById("txtTitulo").value = "";
+    document.getElementById("txtContenido").value = "";
+
+    mostrarAvisos();
+}
+
+function borrarAviso(id) {
+    var nuevaLista = [];
+
+    for (var i = 0; i < avisos.length; i++) {
+        if (avisos[i].id !== id) {
+            nuevaLista.push(avisos[i]);
+        }
+    }
+
+    avisos = nuevaLista;
+
+    mostrarAvisos();
+}
+
+function mostrarAvisos() {
+    var contenedor = document.getElementById("listaAvisos");
+
+    contenedor.innerHTML = "";
+
+    if (avisos.length === 0) {
+        contenedor.textContent = "No hay avisos";
+        return;
+    }
+
+    for (var i = 0; i < avisos.length; i++) {
+        var avisoActual = avisos[i];
+
+        var divAviso = document.createElement("div");
+        divAviso.className = "aviso";
+
+        var divTitulo = document.createElement("div");
+        divTitulo.className = "titulo";
+        divTitulo.textContent = avisoActual.titulo;
+
+        var divContenido = document.createElement("div");
+        divContenido.textContent = avisoActual.contenido;
+
+        var divFecha = document.createElement("div");
+        divFecha.className = "fecha";
+        divFecha.textContent = avisoActual.fecha;
+
+        var boton = document.createElement("button");
+        boton.className = "btn-borrar";
+        boton.textContent = "X";
+
+        boton.onclick = function(id) {
+            return function() {
+                borrarAviso(id);
+            };
+        }(avisoActual.id);
+
+        divAviso.appendChild(divTitulo);
+        divAviso.appendChild(divContenido);
+        divAviso.appendChild(divFecha);
+        divAviso.appendChild(boton);
+
+        contenedor.appendChild(divAviso);
+    }
+}
 </script>
 
 </body>
