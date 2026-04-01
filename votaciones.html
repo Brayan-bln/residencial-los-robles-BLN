@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Votaciones — Residencial Los Robles</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    header {
+      background: #1F4E79;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    header h1 { font-size: 22px; }
+    header p  { font-size: 13px; margin-top: 5px; opacity: 0.8; }
+
+    .nav { margin-top: 10px; }
+
+    .nav button {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 6px 12px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .nav button:hover,
+    .nav button.activo {
+      background: white;
+      color: #1F4E79;
+      font-weight: bold;
+    }
+
+    .contenedor {
+      max-width: 750px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      margin-bottom: 22px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      color: #1F4E79;
+      font-size: 17px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #2E75B6;
+      padding-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus { border-color: #2E75B6; }
+
+    textarea { resize: vertical; min-height: 60px; }
+
+    .opciones-grupo { margin-bottom: 14px; }
+
+    .opcion-fila {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .opcion-fila input { margin-bottom: 0; flex: 1; }
+
+    .btn-add-opcion {
+      background: none;
+      border: 1px dashed #2E75B6;
+      color: #2E75B6;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .btn-add-opcion:hover { background: #e8f1fb; }
+
+    .btn-quitar {
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .btn-principal {
+      width: 100%;
+      padding: 11px;
+      background: #1F4E79;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .btn-principal:hover { background: #2E75B6; }
+
+    /* Tarjeta de votación */
+    .votacion-item {
+      border: 1px solid #d0e4f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: #f5f9fd;
+    }
+
+    .votacion-item .v-titulo {
+      font-weight: bold;
+      color: #1F4E79;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .votacion-item .v-desc {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .votacion-item .v-estado {
+      font-size: 12px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .estado-abierta  { background: #E2EFDA; color: #2e7d32; }
+    .estado-cerrada  { background: #FCE4D6; color: #c62828; }
+
+    /* Opciones de voto */
+    .opcion-voto {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .opcion-voto .nombre-opcion {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .barra-fondo {
+      flex: 2;
+      background: #e0e0e0;
+      border-radius: 10px;
+      height: 14px;
+      overflow: hidden;
+    }
+
+    .barra-relleno {
+      height: 100%;
+      background: #2E75B6;
+      border-radius: 10px;
+      transition: width 0.3s;
+    }
+
+    .opcion-voto .porcentaje {
+      font-size: 12px;
+      color: #555;
+      width: 38px;
+      text-align: right;
+    }
+
+    .btn-votar {
+      background: #2E75B6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-right: 6px;
+      margin-top: 10px;
+    }
+
+    .btn-votar:hover { background: #1F4E79; }
+
+    .btn-cerrar-votacion {
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .total-votos {
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+    }
+
+    .vacio {
+      text-align: center;
+      color: #aaa;
+      font-size: 13px;
+      padding: 20px 0;
+    }
+
+    .mensaje {
+      display: none;
+      margin-top: 10px;
+      padding: 9px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-align: center;
+    }
+    .mensaje.ok    { background: #E2EFDA; color: #2e7d32; }
+    .mensaje.error { background: #FCE4D6; color: #c62828; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Residencial Los Robles</h1>
+  <p>Módulo de Votaciones — Sprint 3</p>
+  <div class="nav">
+    <button onclick="location.href='alta-admin.html'">Administradores</button>
+    <button onclick="location.href='mural_avisos.html'">Avisos</button>
+    <button class="activo">Votaciones</button>
+  </div>
+</header>
+
+<div class="contenedor">
+
+  <!-- CREAR VOTACIÓN -->
+  <div class="card">
+    <h2>➕ Crear nueva votación</h2>
+
+    <label for="tituloVot">Título de la votación</label>
+    <input type="text" id="tituloVot" placeholder="Ej. ¿Instalamos cámaras en la entrada?" />
+
+    <label for="descVot">Descripción (opcional)</label>
+    <textarea id="descVot" placeholder="Explica brevemente de qué trata la votación..."></textarea>
+
+    <label>Opciones de respuesta</label>
+    <div class="opciones-grupo" id="grupoOpciones">
+      <div class="opcion-fila">
+        <input type="text" placeholder="Opción 1" />
+      </div>
+      <div class="opcion-fila">
+        <input type="text" placeholder="Opción 2" />
+      </div>
+    </div>
+
+    <button class="btn-add-opcion" onclick="agregarOpcion()">+ Agregar otra opción</button>
+
+    <button class="btn-principal" onclick="crearVotacion()">Publicar votación</button>
+    <div class="mensaje" id="msgVotacion"></div>
+  </div>
+
+  <!-- LISTA DE VOTACIONES -->
+  <div class="card">
+    <h2>🗳️ Votaciones activas y cerradas</h2>
+    <div id="listaVotaciones">
+      <p class="vacio">Aún no hay votaciones publicadas.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var votaciones = [];
+
+  // Agregar campo de opción extra
+  function agregarOpcion() {
+    var grupo = document.getElementById("grupoOpciones");
+    var total = grupo.querySelectorAll(".opcion-fila").length + 1;
+
+    var fila = document.createElement("div");
+    fila.className = "opcion-fila";
+
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Opción " + total;
+
+    var btnQ = document.createElement("button");
+    btnQ.className = "btn-quitar";
+    btnQ.textContent = "✕";
+    btnQ.onclick = function() { grupo.removeChild(fila); };
+
+    fila.appendChild(input);
+    fila.appendChild(btnQ);
+    grupo.appendChild(fila);
+  }
+
+  function crearVotacion() {
+    var titulo = document.getElementById("tituloVot").value.trim();
+    var desc   = document.getElementById("descVot").value.trim();
+    var inputs = document.querySelectorAll("#grupoOpciones .opcion-fila input");
+    var msg    = document.getElementById("msgVotacion");
+
+    if (titulo === "") {
+      mostrarMsg(msg, "⚠️ El título es obligatorio.", "error"); return;
+    }
+
+    var opciones = [];
+    for (var i = 0; i < inputs.length; i++) {
+      var val = inputs[i].value.trim();
+      if (val !== "") opciones.push({ texto: val, votos: 0 });
+    }
+
+    if (opciones.length < 2) {
+      mostrarMsg(msg, "⚠️ Necesitas al menos 2 opciones.", "error"); return;
+    }
+
+    var nueva = {
+      id:      votaciones.length + 1,
+      titulo:  titulo,
+      desc:    desc,
+      opciones: opciones,
+      estado:  "Abierta",
+      fecha:   new Date().toLocaleDateString("es-MX")
+    };
+
+    votaciones.push(nueva);
+
+    // Limpiar formulario
+    document.getElementById("tituloVot").value = "";
+    document.getElementById("descVot").value   = "";
+    var grupo = document.getElementById("grupoOpciones");
+    grupo.innerHTML =
+      '<div class="opcion-fila"><input type="text" placeholder="Opción 1"/></div>' +
+      '<div class="opcion-fila"><input type="text" placeholder="Opción 2"/></div>';
+
+    mostrarMsg(msg, "✅ Votación publicada con éxito.", "ok");
+    renderVotaciones();
+  }
+
+  function votar(votId, opcionIdx) {
+    for (var i = 0; i < votaciones.length; i++) {
+      if (votaciones[i].id === votId) {
+        if (votaciones[i].estado === "Cerrada") return;
+        votaciones[i].opciones[opcionIdx].votos++;
+        break;
+      }
+    }
+    renderVotaciones();
+  }
+
+  function cerrarVotacion(votId) {
+    for (var i = 0; i < votaciones.length; i++) {
+      if (votaciones[i].id === votId) {
+        votaciones[i].estado = "Cerrada"; break;
+      }
+    }
+    renderVotaciones();
+  }
+
+  function renderVotaciones() {
+    var contenedor = document.getElementById("listaVotaciones");
+
+    if (votaciones.length === 0) {
+      contenedor.innerHTML = '<p class="vacio">Aún no hay votaciones publicadas.</p>';
+      return;
+    }
+
+    var html = "";
+    for (var i = 0; i < votaciones.length; i++) {
+      var v = votaciones[i];
+
+      // Total de votos
+      var totalVotos = 0;
+      for (var j = 0; j < v.opciones.length; j++) totalVotos += v.opciones[j].votos;
+
+      html += '<div class="votacion-item">';
+      html += '<div class="v-titulo">🗳️ ' + v.titulo + '</div>';
+      if (v.desc) html += '<div class="v-desc">' + v.desc + '</div>';
+      html += '<span class="v-estado estado-' + v.estado.toLowerCase() + '">' + v.estado + '</span>';
+
+      // Opciones con barra de progreso
+      for (var j = 0; j < v.opciones.length; j++) {
+        var op  = v.opciones[j];
+        var pct = totalVotos > 0 ? Math.round((op.votos / totalVotos) * 100) : 0;
+
+        html += '<div class="opcion-voto">';
+        html += '  <span class="nombre-opcion">' + op.texto + '</span>';
+        html += '  <div class="barra-fondo"><div class="barra-relleno" style="width:' + pct + '%"></div></div>';
+        html += '  <span class="porcentaje">' + pct + '%</span>';
+
+        if (v.estado === "Abierta") {
+          html += '  <button class="btn-votar" onclick="votar(' + v.id + ',' + j + ')">Votar</button>';
+        }
+        html += '</div>';
+      }
+
+      html += '<div class="total-votos">Total de votos: ' + totalVotos + '  —  Publicada el ' + v.fecha + '</div>';
+
+      if (v.estado === "Abierta") {
+        html += '<button class="btn-cerrar-votacion" onclick="cerrarVotacion(' + v.id + ')">Cerrar votación</button>';
+      }
+
+      html += '</div>';
+    }
+
+    contenedor.innerHTML = html;
+  }
+
+  function mostrarMsg(el, texto, tipo) {
+    el.textContent   = texto;
+    el.className     = "mensaje " + tipo;
+    el.style.display = "block";
+    setTimeout(function() { el.style.display = "none"; }, 3000);
+  }
+</script>
+
+</body>
+</html>
