@@ -1,334 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fase 1</title>
-    <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alta de Administrador — Residencial Los Robles</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
- 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
-      padding: 30px 20px;
-    }
- 
-    header {
-      background: #1F4E79;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-    }
- 
-    header h1 { font-size: 22px; }
-    header p  { font-size: 13px; margin-top: 5px; opacity: 0.8; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Alta de Administrador — Residencial Los Robles</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f4f8;
+        min-height: 100vh;
+        padding: 30px 20px;
+      }
+  
+      header {
+        background: #1a4fa0;
+        color: white;
+        text-align: center;
+        padding: 18px 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+      }
+  
+      header h1 { font-size: 22px; }
+      header p  { font-size: 13px; margin-top: 5px; opacity: 0.8; }
 
-    .nav {
-      margin-top: 10px;
-    }
+      .nav {
+        margin-top: 10px;
+      }
 
-    .nav button {
-      background: transparent;
-      border: 1px solid white;
-      color: white;
-      padding: 6px 12px;
-      margin: 0 5px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+      .nav button {
+        background: transparent;
+        border: 1px solid white;
+        color: white;
+        padding: 6px 12px;
+        margin: 0 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12px;
+      }
 
-    .nav button:hover {
-      background: white;
-      color: #1F4E79;
-    }
- 
-    .contenedor {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
- 
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex: 1;
-      min-width: 280px;
-    }
- 
-    .card h2 {
-      color: #1F4E79;
-      font-size: 17px;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #2E75B6;
-      padding-bottom: 8px;
-    }
- 
-    label {
-      display: block;
-      font-size: 13px;
-      color: #444;
-      margin-bottom: 4px;
-      font-weight: bold;
-    }
- 
-    input, select {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      margin-bottom: 15px;
-      outline: none;
-      transition: border 0.2s;
-    }
- 
-    input:focus, select:focus { border-color: #2E75B6; }
- 
-    .btn-guardar {
-      width: 100%;
-      padding: 11px;
-      background: #1F4E79;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
- 
-    .btn-guardar:hover { background: #2E75B6; }
- 
-    .mensaje {
-      display: none;
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      text-align: center;
-    }
- 
-    .mensaje.ok    { background: #E2EFDA; color: #2e7d32; }
-    .mensaje.error { background: #FCE4D6; color: #c62828; }
- 
-    /* Lista de admins */
-    #lista-admins { margin-top: 10px; }
- 
-    .admin-item {
-      background: #f5f9fd;
-      border: 1px solid #d0e4f0;
-      border-radius: 8px;
-      padding: 12px 15px;
-      margin-bottom: 10px;
-      position: relative;
-    }
- 
-    .admin-item .nombre {
-      font-weight: bold;
-      color: #1F4E79;
-      font-size: 15px;
-    }
- 
-    .admin-item .detalle {
-      font-size: 12px;
-      color: #666;
-      margin-top: 3px;
-    }
- 
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 20px;
-      margin-top: 5px;
-      font-weight: bold;
-    }
- 
-    .badge.activo   { background: #E2EFDA; color: #2e7d32; }
-    .badge.inactivo { background: #FCE4D6; color: #c62828; }
- 
-    .btn-eliminar {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #e53935;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-size: 12px;
-      cursor: pointer;
-    }
- 
-    .btn-eliminar:hover { background: #b71c1c; }
- 
-    .vacio {
-      text-align: center;
-      color: #aaa;
-      font-size: 13px;
-      padding: 20px 0;
-    }
- 
-    .contador {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 10px;
-    }
-  </style>
-</head>
-<body>
-    <header>
-        <h1>Residencial Los Robles</h1>
-        <p>Módulo de Alta de Administrador — Sprint 1</p>
-        <div class="nav">
-          <button onclick="location.href='alta-admin.html'">Administradores</button>
-          <button onclick="location.href='mural_avisos.html'">Avisos</button>
-          <button onclick="location.href='votaciones.html'">Votaciones</button>
-        </div>
-    </header>
- 
-    <div class="contenedor">
-    
-    <!-- FORMULARIO -->
-    <div class="card">
-        <h2>Registrar Administrador</h2>
-    
-        <label for="nombre">Nombre completo</label>
-        <input type="text" id="nombre" placeholder="Ej. Juan Pérez García" />
-    
-        <label for="correo">Correo electrónico</label>
-        <input type="email" id="correo" placeholder="Ej. juan@losrobles.com" />
-    
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres" />
-    
-        <label for="rol">Rol</label>
-        <select id="rol">
-        <option value="">-- Selecciona un rol --</option>
-        <option value="Administrador General">Administrador General</option>
-        <option value="Administrador de Cobranza">Administrador de Cobranza</option>
-        <option value="Administrador de Seguridad">Administrador de Seguridad</option>
-        </select>
-    
-        <button class="btn-guardar" onclick="guardarAdmin()">Guardar Administrador</button>
-    
-        <div class="mensaje" id="mensaje"></div>
-    </div>
-    
-    <!-- LISTA -->
-    <div class="card">
-        <h2>Administradores Registrados</h2>
-        <p class="contador" id="contador">Total: 0 administrador(es)</p>
-        <div id="lista-admins">
-        <p class="vacio">Aún no hay administradores registrados.</p>
-        </div>
-    </div>
-    
-    </div>
+      .nav button:hover {
+        background: white;
+        color: #1F4E79;
+      }
+  
+      .contenedor {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+  
+      .card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0;
+        flex: 1;
+        min-width: 280px;
+        border: 1px;
+        solid #e4eaf2;
+        transition: border-color 0.2s;
+      }
+  
+      .card h2 {
+        color: #1F4E79;
+        font-size: 17px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #2E75B6;
+        padding-bottom: 8px;
+      }
+  
+      label {
+        display: block;
+        font-size: 13px;
+        color: #444;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+  
+      input, select {
+        background: #fafbfd;
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        outline: none;
+        transition: border 0.2s;
+      }
+  
+      input:focus, select:focus { border-color: #1a4fa0; box-shadow: 0 0 0 3px rgba(26,79,160,0.1); background: white; }
+  
+      .btn-guardar {
+        width: 100%;
+        padding: 11px;
+        background: #1F4E79;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.15s;
+        transform 0.1s;
+      }
+  
+      .btn-guardar:hover { background: #2E75B6; }
+  
+      .mensaje {
+        display: none;
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        text-align: center;
+      }
+  
+      .mensaje.ok    { background: #E2EFDA; color: #2e7d32; }
+      .mensaje.error { background: #FCE4D6; color: #c62828; }
+  
+      /* Lista de admins */
+      #lista-admins { margin-top: 10px; }
+  
+      .admin-item {
+        background: #f5f9fd;
+        border: 1px solid #d0e4f0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        position: relative;
+        border-left: 3px solid #1a4fa0;
+      }
+  
+      .admin-item .nombre {
+        font-weight: bold;
+        color: #1F4E79;
+        font-size: 15px;
+      }
+  
+      .admin-item .detalle {
+        font-size: 12px;
+        color: #666;
+        margin-top: 3px;
+      }
+  
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-top: 5px;
+        font-weight: bold;
+      }
+  
+      .badge.activo { background: #e3f4eb; color: #1b7c42; }
+      .badge.inactivo { background: #FCE4D6; color: #c62828; }
+  
+      .btn-eliminar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #e53935;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+  
+      .btn-eliminar:hover { background: #b71c1c; }
+  
+      .vacio {
+        text-align: center;
+        color: #aaa;
+        font-size: 13px;
+        padding: 20px 0;
+      }
+  
+      .contador {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+      <header>
+          <h1>Residencial Los Robles</h1>
+          <p>Módulo de Alta de Administrador — Sprint 1</p>
+          <div class="nav">
+            <button onclick="location.href='alta-admin.html'">Administradores</button>
+            <button onclick="location.href='mural_avisos.html'">Avisos</button>
+            <button onclick="location.href='votaciones.html'">Votaciones</button>
+          </div>
+      </header>
+  
+      <div class="contenedor">
+      
+      <!-- FORMULARIO -->
+      <div class="card">
+          <h2>Registrar Administrador</h2>
+      
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" placeholder="Ej. Juan Pérez García" />
+      
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" placeholder="Ej. juan@losrobles.com" />
+      
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres" />
+      
+          <label for="rol">Rol</label>
+          <select id="rol">
+          <option value="">-- Selecciona un rol --</option>
+          <option value="Administrador General">Administrador General</option>
+          <option value="Administrador de Cobranza">Administrador de Cobranza</option>
+          <option value="Administrador de Seguridad">Administrador de Seguridad</option>
+          </select>
+      
+          <button class="btn-guardar" onclick="guardarAdmin()">Guardar Administrador</button>
+      
+          <div class="mensaje" id="mensaje"></div>
+      </div>
+      
+      <!-- LISTA -->
+      <div class="card">
+          <h2>Administradores Registrados</h2>
+          <p class="contador" id="contador">Total: 0 administrador(es)</p>
+          <div id="lista-admins">
+          <p class="vacio">Aún no hay administradores registrados.</p>
+          </div>
+      </div>
+      
+      </div>
 
-    <script>
-        // Aquí guardamos los admins (array en memoria, sin base de datos)
-        var admins = [];
-        
-        function guardarAdmin() {
-            // Leer valores del formulario
-            var nombre    = document.getElementById("nombre").value.trim();
-            var correo    = document.getElementById("correo").value.trim();
-            var contrasena = document.getElementById("contrasena").value.trim();
-            var rol       = document.getElementById("rol").value;
-            var mensaje   = document.getElementById("mensaje");
-        
-            // Validación: todos los campos son obligatorios
-            if (nombre === "" || correo === "" || contrasena === "" || rol === "") {
-            mostrarMensaje("⚠️ Por favor llena todos los campos.", "error");
-            return;
-            }
-        
-            // Validación: contraseña mínimo 6 caracteres
-            if (contrasena.length < 6) {
-            mostrarMensaje("⚠️ La contraseña debe tener al menos 6 caracteres.", "error");
-            return;
-            }
-        
-            // Validación: correo no repetido
-            for (var i = 0; i < admins.length; i++) {
-            if (admins[i].correo === correo) {
-                mostrarMensaje("⚠️ Ese correo ya está registrado.", "error");
-                return;
-            }
-            }
-        
-            // Crear objeto administrador
-            var nuevoAdmin = {
-            id:        admins.length + 1,
-            nombre:    nombre,
-            correo:    correo,
-            rol:       rol,
-            estado:    "Activo"
-            };
-        
-            // Agregar al array
-            admins.push(nuevoAdmin);
-        
-            // Limpiar formulario
-            document.getElementById("nombre").value     = "";
-            document.getElementById("correo").value     = "";
-            document.getElementById("contrasena").value = "";
-            document.getElementById("rol").value        = "";
-        
-            mostrarMensaje("✅ Administrador registrado con éxito.", "ok");
-            actualizarLista();
-        }
-        
-        function eliminarAdmin(id) {
-            // Filtrar el admin con ese id
-            admins = admins.filter(function(a) { return a.id !== id; });
-            actualizarLista();
-        }
-        
-        function actualizarLista() {
-            var contenedor = document.getElementById("lista-admins");
-            var contador   = document.getElementById("contador");
-        
-            contador.textContent = "Total: " + admins.length + " administrador(es)";
-        
-            if (admins.length === 0) {
-            contenedor.innerHTML = '<p class="vacio">Aún no hay administradores registrados.</p>';
-            return;
-            }
-        
-            var html = "";
-            for (var i = 0; i < admins.length; i++) {
-            var a = admins[i];
-            html += '<div class="admin-item">';
-            html += '  <div class="nombre">' + a.nombre + '</div>';
-            html += '  <div class="detalle">📧 ' + a.correo + '</div>';
-            html += '  <div class="detalle">🏷️ ' + a.rol + '</div>';
-            html += '  <span class="badge activo">' + a.estado + '</span>';
-            html += '  <button class="btn-eliminar" onclick="eliminarAdmin(' + a.id + ')">Eliminar</button>';
-            html += '</div>';
-            }
-        
-            contenedor.innerHTML = html;
-        }
-        
-        function mostrarMensaje(texto, tipo) {
-            var el = document.getElementById("mensaje");
-            el.textContent  = texto;
-            el.className    = "mensaje " + tipo;
-            el.style.display = "block";
-            setTimeout(function() { el.style.display = "none"; }, 3000);
-        }
-    </script>
-</body>
+      <script>
+          // Aquí guardamos los admins (array en memoria, sin base de datos)
+          var admins = [];
+          
+          function guardarAdmin() {
+              // Leer valores del formulario
+              var nombre    = document.getElementById("nombre").value.trim();
+              var correo    = document.getElementById("correo").value.trim();
+              var contrasena = document.getElementById("contrasena").value.trim();
+              var rol       = document.getElementById("rol").value;
+              var mensaje   = document.getElementById("mensaje");
+          
+              // Validación: todos los campos son obligatorios
+              if (nombre === "" || correo === "" || contrasena === "" || rol === "") {
+              mostrarMensaje("⚠️ Por favor llena todos los campos.", "error");
+              return;
+              }
+          
+              // Validación: contraseña mínimo 6 caracteres
+              if (contrasena.length < 6) {
+              mostrarMensaje("⚠️ La contraseña debe tener al menos 6 caracteres.", "error");
+              return;
+              }
+          
+              // Validación: correo no repetido
+              for (var i = 0; i < admins.length; i++) {
+              if (admins[i].correo === correo) {
+                  mostrarMensaje("⚠️ Ese correo ya está registrado.", "error");
+                  return;
+              }
+              }
+          
+              // Crear objeto administrador
+              var nuevoAdmin = {
+              id:        admins.length + 1,
+              nombre:    nombre,
+              correo:    correo,
+              rol:       rol,
+              estado:    "Activo"
+              };
+          
+              // Agregar al array
+              admins.push(nuevoAdmin);
+          
+              // Limpiar formulario
+              document.getElementById("nombre").value     = "";
+              document.getElementById("correo").value     = "";
+              document.getElementById("contrasena").value = "";
+              document.getElementById("rol").value        = "";
+          
+              mostrarMensaje("✅ Administrador registrado con éxito.", "ok");
+              actualizarLista();
+          }
+          
+          function eliminarAdmin(id) {
+              // Filtrar el admin con ese id
+              admins = admins.filter(function(a) { return a.id !== id; });
+              actualizarLista();
+          }
+          
+          function actualizarLista() {
+              var contenedor = document.getElementById("lista-admins");
+              var contador   = document.getElementById("contador");
+          
+              contador.textContent = "Total: " + admins.length + " administrador(es)";
+          
+              if (admins.length === 0) {
+              contenedor.innerHTML = '<p class="vacio">Aún no hay administradores registrados.</p>';
+              return;
+              }
+          
+              var html = "";
+              for (var i = 0; i < admins.length; i++) {
+              var a = admins[i];
+              html += '<div class="admin-item">';
+              html += '  <div class="nombre">' + a.nombre + '</div>';
+              html += '  <div class="detalle">📧 ' + a.correo + '</div>';
+              html += '  <div class="detalle">🏷️ ' + a.rol + '</div>';
+              html += '  <span class="badge activo">' + a.estado + '</span>';
+              html += '  <button class="btn-eliminar" onclick="eliminarAdmin(' + a.id + ')">Eliminar</button>';
+              html += '</div>';
+              }
+          
+              contenedor.innerHTML = html;
+          }
+          
+          function mostrarMensaje(texto, tipo) {
+              var el = document.getElementById("mensaje");
+              el.textContent  = texto;
+              el.className    = "mensaje " + tipo;
+              el.style.display = "block";
+              setTimeout(function() { el.style.display = "none"; }, 3000);
+          }
+      </script>
+  </body>
 </html>
